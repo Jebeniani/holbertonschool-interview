@@ -1,5 +1,9 @@
 #!/usr/bin/python3
+"""Lockboxes"""
+
+
 def canUnlockAll(boxes):
+    """Lockboxes"""
     newlist = []
     k = len(boxes)
     for i in boxes:
