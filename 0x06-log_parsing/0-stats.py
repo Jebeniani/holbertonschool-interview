@@ -2,22 +2,19 @@
 
 import sys
 
-# dictionaries to store metrics
-file_size = 0
-status_codes = {200: 0, 301: 0, 400: 0, 401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
-
-# counter for number of lines processed
-line_count = 0
-
-# function to print metrics
-
 
 def print_metrics(metrics, file_size):
     codes = [200, 301, 400, 401, 403, 404, 405, 500]
-    print("Total file size: " + str(file_size))
-    for code in sorted(status_codes.keys()):
-        if status_codes[code] > 0:
-            print(str(code) + ": " + str(status_codes[code]))
+    print("Total file size: {}" .format(file_size))
+    for code in range(len(codes)):
+        if status_codes[codes[code]] > 0:
+            print("{}: {}".format(codes[code], status_codes[codes[code]]))
+
+
+# dictionaries to store metrics
+file_size = 0
+line_count = 0
+status_codes = {200: 0, 301: 0, 400: 0, 401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
 
 
 # read stdin line by line
