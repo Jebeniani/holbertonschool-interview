@@ -1,32 +1,45 @@
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "binary_trees.h"
 
 /**
- * sorted_array_to_avl - Builds an AVL tree from a sorted array
+ * _sorted_array_to_avl - Helper function for sorted_array_to_avl
  * @array: Pointer to the first element of the array
- * @size: Number of elements in the array
+ * @start: Starting index
+ * @end: Ending index
+ * @parent: Pointer to parent node
  *
- * Return: Pointer to the root node of the created AVL tree, or NULL on failure
+ * Return: Newly created node
+ */
+
+avl_t *_sorted_array_to_avl(int *array, int start, int end, avl_t *parent)
+{
+    avl_t *new;
+    int mid;
+
+    if (start > end)
+        return (NULL);
+    mid = (start + end) / 2;
+    new = calloc(1, sizeof(avl_t));
+    if (!new)
+        return (NULL);
+    new->n = array[mid];
+    new->parent = parent;
+    new->left = _sorted_array_to_avl(array, start, mid - 1, new);
+    new->right = _sorted_array_to_avl(array, mid + 1, end, new);
+    return (new);
+}
+
+/**
+ * sorted_array_to_avl - builds an AVL tree from an array
+ * @array: input array
+ * @size: size of array
+ * Return: pointer to the root node of the created AVL tree, or NULL on failure
  */
 avl_t *sorted_array_to_avl(int *array, size_t size)
 {
-    if (array == NULL || size == 0)
-        return NULL;
-
-    /* Create root node */
-    avl_t *root = malloc(sizeof(avl_t));
-    if (root == NULL)
-        return NULL;
-    root->n = array[size / 2];
-    root->parent = NULL;
-
-    /* Recursively build left and right subtrees */
-    root->left = sorted_array_to_avl(array, size / 2);
-    root->right = sorted_array_to_avl(array + size / 2 + 1, size - size / 2 - 1);
-    if (root->left != NULL)
-        root->left->parent = root;
-    if (root->right != NULL)
-        root->right->parent = root;
-
-    return root;
+    if (!array)
+        return (NULL);
+    return (_sorted_array_to_avl(array, 0, size - 1, NULL));
 }
