@@ -10,43 +10,44 @@
  */
 skiplist_t *linear_skip(skiplist_t *list, int value)
 {
-    skiplist_t *express, *prev;
+skiplist_t *express, *prev;
 
-    if (list == NULL)
-        return (NULL);
+if (list == NULL)
+return (NULL);
 
     /* Traverse the express lane until the value is found or passed */
-    for (express = list->express; express && express->n < value; express = express->express)
-    {
-        printf("Value checked at index [%lu] = [%d]\n", express->index, express->n);
-        prev = express;
-    }
+for (express = list->express; express && express->n < value;
+express = express->express)
+{
+printf("Value checked at index [%lu] = [%d]\n",
+express->index, express->n);
+prev = express;
+}
 
     /* Traverse the normal lane between the last express node and the value */
-    if (!express)
-    {
-        /* If the end of the list is reached on the express lane, traverse the last nodes */
-        list = prev;
-        while (list->next)
-            list = list->next;
-    }
-    else
-    {
-        list = express;
-    }
+if (!express)
+{
+list = prev;
+while (list->next)
+list = list->next;
+}
+else
+{
+list = express;
+}
 
-    while (list && list->n < value)
-    {
-        printf("Value checked at index [%lu] = [%d]\n", list->index, list->n);
-        list = list->next;
-    }
+while (list && list->n < value)
+{
+printf("Value checked at index [%lu] = [%d]\n", list->index, list->n);
+list = list->next;
+}
 
     /* If the value is found, return the node, otherwise return NULL */
-    if (list && list->n == value)
-    {
-        printf("Value checked at index [%lu] = [%d]\n", list->index, list->n);
-        return (list);
-    }
+if (list && list->n == value)
+{
+printf("Value checked at index [%lu] = [%d]\n", list->index, list->n);
+return (list);
+}
 
-    return (NULL);
+return (NULL);
 }
