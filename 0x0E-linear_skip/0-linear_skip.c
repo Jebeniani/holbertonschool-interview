@@ -1,53 +1,50 @@
 #include "search.h"
 
 /**
- * linear_skip - searches for a value in a sorted skip list of integers
- * @list: pointer to the head of the skip list to search in
- * @value: the value to search for
+ * linear_skip - searches for a value conatined in a skip list
  *
- * Return: pointer to the first node where value is located,
- *         or NULL if value is not present in list or if head is NULL
+ * @list: pointer to the head
+ * @value: value to search for
+ * Return: pointer on the first node where value is located
  */
 skiplist_t *linear_skip(skiplist_t *list, int value)
 {
-skiplist_t *express, *prev;
+skiplist_t *temp = NULL, *stop = NULL;
 
-if (list == NULL)
+if (!list)
 return (NULL);
 
-    /* Traverse the express lane until the value is found or passed */
-for (express = list->express; express && express->n < value;
-express = express->express)
+temp = list;
+while (temp && temp->express && temp->express->n < value)
 {
-printf("Value checked at index [%lu] = [%d]\n",
-express->index, express->n);
-prev = express;
+printf("Value checked at index [%lu] = [%i]\n",
+temp->express->index, temp->express->n);
+temp = temp->express;
 }
-
-    /* Traverse the normal lane between the last express node and the value */
-if (!express)
+stop = temp;
+while (stop && stop->next != stop->express)
+stop = stop->next;
+if (temp->express)
 {
-list = prev;
-while (list->next)
-list = list->next;
+printf("Value checked at index [%lu] = [%i]\n",
+temp->express->index, temp->express->n);
+printf("Value found between indexes [%lu] and [%lu]\n",
+temp->index, temp->express->index);
 }
 else
-{
-list = express;
-}
+printf("Value found between indexes [%lu] and [%lu]\n",
+temp->index, stop->index);
 
-while (list && list->n < value)
+while (temp != stop && temp->n < value)
 {
-printf("Value checked at index [%lu] = [%d]\n", list->index, list->n);
-list = list->next;
+printf("Value checked at index [%lu] = [%i]\n",
+temp->index, temp->n);
+temp = temp->next;
 }
+printf("Value checked at index [%lu] = [%i]\n",
+temp->index, temp->n);
 
-    /* If the value is found, return the node, otherwise return NULL */
-if (list && list->n == value)
-{
-printf("Value checked at index [%lu] = [%d]\n", list->index, list->n);
-return (list);
-}
-
+if (temp == stop)
 return (NULL);
+return (temp);
 }
