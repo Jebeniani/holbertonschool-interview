@@ -1,13 +1,5 @@
 #!/usr/bin/node
 
-/* eslint-disable import/no-extraneous-dependencies */
-
-/* eslint-disable consistent-return */
-
-/* eslint-disable no-unused-vars */
-
-/* eslint-disable no-await-in-loop */
-
 const request = require('request');
 
 request('https://swapi-api.hbtn.io/api/films/\' + process.argv[2] +\'/', async (err, res, body) => {
