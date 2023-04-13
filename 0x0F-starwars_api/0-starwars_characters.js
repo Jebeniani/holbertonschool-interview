@@ -8,10 +8,7 @@
 
 const request = require('request');
 
-const filmId = process.argv[2];
-const url = `https://swapi-api.hbtn.io/api/films/${filmId}`;
-
-request(url, async (err, response, body) => {
+request(`https://swapi-api.hbtn.io/api/films/${process.argv[2]}/`, async (err, res, body) => {
   if (err) {
     console.log(err);
   }
