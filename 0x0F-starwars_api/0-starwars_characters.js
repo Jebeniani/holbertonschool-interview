@@ -10,7 +10,7 @@
 
 const request = require('request');
 
-request(`https://swapi-api.hbtn.io/api/films/${process.argv[2]}/`, async (err, res, body) => {
+request('https://swapi-api.hbtn.io/api/films/\' + process.argv[2] +\'/', async (err, res, body) => {
   if (err) {
     console.log(err);
   }
