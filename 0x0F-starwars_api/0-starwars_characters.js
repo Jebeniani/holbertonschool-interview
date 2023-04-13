@@ -1,5 +1,7 @@
 #!/usr/bin/node
 
+/* eslint-disable import/no-extraneous-dependencies */
+
 /* eslint-disable consistent-return */
 
 /* eslint-disable no-unused-vars */
