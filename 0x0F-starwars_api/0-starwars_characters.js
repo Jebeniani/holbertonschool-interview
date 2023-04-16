@@ -2,22 +2,36 @@
 
 const request = require('request');
 
-request('https://swapi-api.hbtn.io/api/films/\' + process.argv[2] +\'/', async (err, res, body) => {
-  if (err) {
-    console.log(err);
+const movieId = process.argv[2];
+
+request(`https://swapi-api.hbtn.io/api/films/${movieId}/`, (error, response, body) => {
+  if (error) {
+    console.log(`Error: Could not retrieve movie details for Movie ID ${movieId}`);
+    return;
   }
-  const charURLList = JSON.parse(body).characters;
 
-  for (const charURL of charURLList) {
-    await new Promise((resolve, reject) => {
-      request(charURL, (err, res, body) => {
-        if (err) {
-          return console.error(err);
-        }
+  if (response.statusCode !== 200) {
+    console.log(`Error: Could not retrieve movie details for Movie ID ${movieId}`);
+    return;
+  }
 
-        console.log(JSON.parse(body).name);
-        resolve();
-      });
+  const movie = JSON.parse(body);
+  const characterUrls = movie.characters;
+
+  characterUrls.forEach((characterUrl) => {
+    request(characterUrl, (error, response, body) => {
+      if (error) {
+        console.log(`Error: Could not retrieve character details for URL ${characterUrl}`);
+        return;
+      }
+
+      if (response.statusCode !== 200) {
+        console.log(`Error: Could not retrieve character details for URL ${characterUrl}`);
+        return;
+      }
+
+      const character = JSON.parse(body);
+      console.log(character.name);
     });
-  }
+  });
 });
