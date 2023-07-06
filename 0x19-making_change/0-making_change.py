@@ -8,7 +8,8 @@
 
     Returns:
         int: The fewest number of coins needed to reach the target amount.
-             Returns -1 if the target amount cannot be met by any combination of coins.
+             Returns -1 if the target amount cannot be met
+             by any combination of coins.
     """
 
 
