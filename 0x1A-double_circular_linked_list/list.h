@@ -1,6 +1,9 @@
 #ifndef LIST_H
 #define LIST_H
 
+#include <stdlib.h>
+#include <string.h>
+
 /**
  * struct List - doubly linked list
  * @str: string - (malloc'ed string)
@@ -20,5 +23,6 @@ struct List *next;
 /* Function Prototypes */
 List *add_node_end(List **list, char *str);
 List *add_node_begin(List **list, char *str);
+char *strdup(const char *str);
 
 #endif /* LIST_H */
