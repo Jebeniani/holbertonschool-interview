@@ -1,14 +1,9 @@
+#!/usr/bin/python3
+"Prime game"
+
+
 def isWinner(x, nums):
-    """
-    Determine the winner of a game with given rounds and number sets.
-
-    Args:
-        x (int): Number of rounds.
-        nums (list): List of integers representing the sets for each round.
-
-    Returns:
-        str or None: The name of the player who won the most rounds
-    """
+    """Determine the winner of a game with given rounds and number sets."""
     if not nums or x < 1:
         return None
 
