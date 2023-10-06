@@ -1,7 +1,9 @@
-#ifndef MENGER
-#define MENGER
+#ifndef MENGER_H_
+#define MENGER_H_
 
-void draw_sponge(int level, int x, int y, int size);
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
 void menger(int level);
-
 #endif
