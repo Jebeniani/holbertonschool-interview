@@ -4,42 +4,64 @@
 #include "binary_trees.h"
 
 /**
- * _sorted_array_to_avl - Helper function for sorted_array_to_avl
- * @array: Pointer to the first element of the array
- * @start: Starting index
- * @end: Ending index
- * @parent: Pointer to parent node
+ * add_new_node - Create a new node for AVL tree
+ * @n: Value of node to create
+ * @parent: Parent node of new node to create
  *
- * Return: Newly created node
+ * Return: New node or NULL on failure
  */
-
-avl_t *_sorted_array_to_avl(int *array, int start, int end, avl_t *parent)
+avl_t *add_new_node(int n, avl_t *parent)
 {
-    avl_t *new;
-    int mid;
+avl_t *new_node = malloc(sizeof(*new_node));
 
-    if (start > end)
-        return (NULL);
-    mid = (start + end) / 2;
-    new = calloc(1, sizeof(avl_t));
-    if (!new)
-        return (NULL);
-    new->n = array[mid];
-    new->parent = parent;
-    new->left = _sorted_array_to_avl(array, start, mid - 1, new);
-    new->right = _sorted_array_to_avl(array, mid + 1, end, new);
-    return (new);
+	if (!new_node)
+	{
+		return (NULL);
+	}
+	new_node->parent = parent;
+	new_node->n = n;
+	new_node->left = NULL;
+	new_node->right = NULL;
+	return (new_node);
 }
 
 /**
- * sorted_array_to_avl - builds an AVL tree from an array
- * @array: input array
- * @size: size of array
- * Return: pointer to the root node of the created AVL tree, or NULL on failure
+ * avl_run - Build AVL tree from sorted array
+ * @parent: Parent node of current node being created
+ * @array: Pointer to first element of array
+ * @left: Index of leftmost element in current segment of array
+ * @right: Index of rightmost element in current segment of array
+ *
+ * Return: Root node of AVL tree or NULL on failure
+ */
+avl_t *avl_run(avl_t *parent, int *array, int left, int right)
+{
+	avl_t *new;
+	int i;
+
+	if (left > right)
+	{
+		return (NULL);
+	}
+	i = (left + right) / 2;
+	new = add_new_node(array[i], parent);
+	if (!new)
+	{
+		return (NULL);
+	}
+	new->left = avl_run(new, array, left, i - 1);
+	new->right = avl_run(new, array, i + 1, right);
+	return (new);
+}
+
+/**
+ * sorted_array_to_avl - Build AVL tree from sorted array
+ * @array: Pointer to first element of array
+ * @size: Number of elements in array
+ *
+ * Return: Root node of AVL tree or NULL on failure
  */
 avl_t *sorted_array_to_avl(int *array, size_t size)
 {
-    if (!array)
-        return (NULL);
-    return (_sorted_array_to_avl(array, 0, size - 1, NULL));
+	return (avl_run(NULL, array, 0, size - 1));
 }
