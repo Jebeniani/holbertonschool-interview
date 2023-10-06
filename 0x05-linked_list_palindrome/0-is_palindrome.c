@@ -1,39 +1,41 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "lists.h"
 
-typedef struct listint_s
-{
-    int n;
-    struct listint_s *next;
-} listint_t;
+/**
+ * is_palindrome - check if the list is palinrome
+ * @head: pointer to pointer of first node of listint_t list
+ * Return: 1 if list is palindrom return 0 otherwise
+ */
 
 int is_palindrome(listint_t **head)
 {
-    if (*head == NULL)
-        return 1;
+listint_t *slow, *fast;
+int stack[1024], i = -1;
 
-    listint_t *slow = *head, *fast = *head;
-    listint_t *prev = NULL, *next;
+slow = fast = *head;
 
-    while (fast != NULL && fast->next != NULL)
-    {
-        fast = fast->next->next;
-        next = slow->next;
-        slow->next = prev;
-        prev = slow;
-        slow = next;
-    }
+if (*head == NULL)
+return (1);
 
-    if (fast != NULL)
-        slow = slow->next;
+while (fast && fast->next)
+{
+stack[++i] = slow->n;
+slow = slow->next;
+fast = fast->next->next;
+}
 
-    while (slow != NULL)
-    {
-        if (prev->n != slow->n)
-            return 0;
-        prev = prev->next;
-        slow = slow->next;
-    }
+if (fast)
+slow = slow->next;
 
-    return 1;
+while (slow)
+{
+if (stack[i--] != slow->n)
+{
+return (0);
+}
+slow = slow->next;
+}
+
+return (1);
 }
