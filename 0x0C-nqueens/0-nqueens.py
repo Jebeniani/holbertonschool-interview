@@ -35,7 +35,8 @@ def solve(board, row, n):
     print the solution
     """
     if row == n:
-        print([[i, j] for i in range(n) for j in range(n) if board[i][j] == 1])
+        solutions.append([[i, j] for i in range(n)
+                          for j in range(n) if board[i][j] == 1])
         return True
 
     for col in range(n):
@@ -65,8 +66,12 @@ if __name__ == '__main__':
         print("N must be at least 4")
         sys.exit(1)
 
+    solutions = []
     board = [[0 for j in range(n)] for i in range(n)]
     """
-    running this shit recursively
+    running this recursively
     """
     solve(board, 0, n)
+
+    for solution in solutions:
+        print(solution)
