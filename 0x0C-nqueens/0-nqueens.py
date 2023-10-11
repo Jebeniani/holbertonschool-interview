@@ -3,49 +3,70 @@
 import sys
 
 
-def placing_n(n, row, col, result):
+def is_safe(board, row, col, n):
     """
-    A recursive function that tries to place a queen in a given row
-    by checking all the possible columns in that row
+    is_safe func to check if there is a queen in the same column
     """
-    while col < n:
-        if check_around(row, col, result):
-            result.append([row, col])
-            if row == n - 1:
-                print(result)
-                result.pop()
-            else:
-                placing_n(n, row + 1, 0, result)
-        col += 1
-    if len(result) > 0:
-        result.pop()
+    for i in range(row):
+        if board[i][col] == 1:
+            return False
 
+    i = row
+    j = col
+    while i >= 0 and j >= 0:
+        if board[i][j] == 1:
+            return False
+        i -= 1
+        j -= 1
 
-def check_around(row, col, result):
-    """
-    A helper function that checks if a queen can be placed
-    in the given row and column without attacking other queens
-    in the result list.
-    """
-    diagR = [i[0] + i[1] for i in result]
-    diagL = [i[1] - i[0] for i in result]
-    colms = [i[1] for i in result]
-    rows = [i[0] for i in result]
-    if row in rows or col in colms or row + col in diagR or col - row in diagL:
-        return False
+    i = row
+    j = col
+    while i >= 0 and j < n:
+        if board[i][j] == 1:
+            return False
+        i -= 1
+        j += 1
+
     return True
 
 
-if __name__ == "__main__":
+def solve(board, row, n):
+    """
+    print the solution
+    """
+    if row == n:
+        print([[i, j] for i in range(n) for j in range(n) if board[i][j] == 1])
+        return True
+
+    for col in range(n):
+        if is_safe(board, row, col, n):
+            board[row][col] = 1
+            solve(board, row + 1, n)
+            board[row][col] = 0
+
+    return False
+
+
+if __name__ == '__main__':
+    """
+    main
+    """
     if len(sys.argv) != 2:
         print("Usage: nqueens N")
         sys.exit(1)
-    if not sys.argv[1].isdigit():
+
+    try:
+        n = int(sys.argv[1])
+    except ValueError:
         print("N must be a number")
         sys.exit(1)
-    n = int(sys.argv[1])
+
     if n < 4:
         print("N must be at least 4")
         sys.exit(1)
-    result = []
-    placing_n(n, 0, 0, result)
+
+    board = [[0 for j in range(n)] for i in range(n)]
+    """
+    running this shit recursively
+    """
+    solve(board, 0, n)
