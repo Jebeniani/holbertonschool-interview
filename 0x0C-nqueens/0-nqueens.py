@@ -49,7 +49,7 @@ def solve(board, row, n):
 
 if __name__ == '__main__':
     """
-    main
+    main.
     """
     if len(sys.argv) != 2:
         print("Usage: nqueens N")
