@@ -3,7 +3,6 @@
     script that prints all characters of a Star Wars movie
 */
 
-
 const args = process.argv.slice(2);
 if (args < 1) {
   console.log('Error');
