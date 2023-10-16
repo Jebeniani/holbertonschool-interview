@@ -1,43 +1,38 @@
 #!/usr/bin/python3
-"""0-nqueens.py"""
+"""nqueens.py"""
 import sys
 
 
 def is_safe(board, row, col, n):
     """
-    is_safe func to check if there is a queen in the same column
+    Check if it's safe to place a queen at the given position
     """
     for i in range(row):
         if board[i][col] == 1:
             return False
 
-    i = row
-    j = col
+    i, j = row, col
     while i >= 0 and j >= 0:
         if board[i][j] == 1:
             return False
-        i -= 1
-        j -= 1
+        i, j = i - 1, j - 1
 
-    i = row
-    j = col
+    i, j = row, col
     while i >= 0 and j < n:
         if board[i][j] == 1:
             return False
-        i -= 1
-        j += 1
+        i, j = i - 1, j + 1
 
     return True
 
 
 def solve(board, row, n):
     """
-    print the solution
+    Recursively solve the N-Queens problem
     """
     if row == n:
-        solutions.append([[i, j] for i in range(n)
-                          for j in range(n) if board[i][j] == 1])
-        return True
+        solutions.append(["." * col + "Q" + "." * (n - col - 1)for col in board])
+        return
 
     for col in range(n):
         if is_safe(board, row, col, n):
@@ -45,13 +40,18 @@ def solve(board, row, n):
             solve(board, row + 1, n)
             board[row][col] = 0
 
-    return False
+
+def print_solutions(solutions):
+    """
+    Print the solutions in the required format
+    """
+    for solution in solutions:
+        for row in solution:
+            print(row)
+        print()
 
 
 if __name__ == '__main__':
-    """
-    main.
-    """
     if len(sys.argv) != 2:
         print("Usage: nqueens N")
         sys.exit(1)
@@ -67,11 +67,7 @@ if __name__ == '__main__':
         sys.exit(1)
 
     solutions = []
-    board = [[0 for j in range(n)] for i in range(n)]
-    """
-    running this recursively
-    """
-    solve(board, 0, n)
+    board = [[0 for _ in range(n)] for _ in range(n)]
 
-    for solution in solutions:
-        print(solution)
+    solve(board, 0, n)
+    print_solutions(solutions)
