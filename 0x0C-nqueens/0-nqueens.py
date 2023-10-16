@@ -1,73 +1,51 @@
 #!/usr/bin/python3
-""" a program that solves the N queens problem"""
+
 import sys
 
 
-class NQueen:
-    """ Class for solving N Queen Problem """
-
-    def __init__(self, n):
-        """ Global Variables """
-        self.n = n
-        self.x = [0 for i in range(n + 1)]
-        self.res = []
-
-    def place(self, k, i):
-        """ Checks if k Queen can be placed in i column (True)
-        or if the are attacking queens in row or diagonal (False)
-        """
-
-        # j checks from 1 to k - 1 (Up to previous queen)
-        for j in range(1, k):
-            # There is already a queen in column
-            # or a queen in same diagonal
-            if self.x[j] == i or \
-               abs(self.x[j] - i) == abs(j - k):
-                return 0
-        return 1
-
-    def nQueen(self, k):
-        """ place every queen in the board
-        Args:
-        k: starting queen from which to evaluate
-        """
-        # i goes from column 1 to column n (1st column is 1st index)
-        for i in range(1, self.n + 1):
-            if self.place(k, i):
-                # Queen can be placed in i column
-                self.x[k] = i
-                if k == self.n:
-                    # Placed all 4 Queens (A solution was found)
-                    solution = []
-                    for i in range(1, self.n + 1):
-                        solution.append([i - 1, self.x[i] - 1])
-                    self.res.append(solution)
-                else:
-                    # Need to place more Queens
-                    self.nQueen(k + 1)
-        return self.res
+def placing_n(n, row, col, result):
+    """
+    A recursive function that tries to place a queen in a given row
+    by checking all the possible columns in that row.
+    """
+    while col < n:
+        if check_around(row, col, result):
+            result.append([row, col])
+            if row == n - 1:
+                print(result)
+                result.pop()
+            else:
+                placing_n(n, row + 1, 0, result)
+        col += 1
+    if len(result) > 0:
+        result.pop()
 
 
-# Main
+def check_around(row, col, result):
+    """
+    A helper function that checks if a queen can be placed
+    in the given row and column without attacking other queens
+    in the result list.
+    """
+    diagR = [i[0] + i[1] for i in result]
+    diagL = [i[1] - i[0] for i in result]
+    colms = [i[1] for i in result]
+    rows = [i[0] for i in result]
+    if row in rows or col in colms or row + col in diagR or col - row in diagL:
+        return False
+    return True
 
-if len(sys.argv) != 2:
-    print("Usage: nqueens N")
-    sys.exit(1)
 
-N = sys.argv[1]
-
-try:
-    N = int(N)
-except ValueError:
-    print("N must be a number")
-    sys.exit(1)
-
-if N < 4:
-    print("N must be at least 4")
-    sys.exit(1)
-
-queen = NQueen(N)
-res = queen.nQueen(1)
-
-for i in res:
-    print(i)
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: nqueens N")
+        sys.exit(1)
+    if not sys.argv[1].isdigit():
+        print("N must be a number")
+        sys.exit(1)
+    n = int(sys.argv[1])
+    if n < 4:
+        print("N must be at least 4")
+        sys.exit(1)
+    result = []
+    placing_n(n, 0, 0, result)
