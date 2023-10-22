@@ -6,7 +6,7 @@ import sys
 def placing_n(n, row, col, result):
     """
     A recursive function that tries to place a queen in a given row
-    by checking all the possible columns in that row.
+    by checking all the possible columns in that row
     """
     while col < n:
         if check_around(row, col, result):
