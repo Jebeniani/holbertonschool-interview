@@ -1,49 +1,69 @@
 #!/usr/bin/python3
+""" Its like Ive forgotten everything in a couple short weeks"""
 
-import sys
-
-
-def placing_n(n, row, col, result):
-    """
-    A recursive function that places a queen in a given row
-    by checking all the possible columns in that row.
-    """
-    while col < n:
-        if check_around(row, col, result):
-            result.append([row, col])
-            if row == n - 1:
-                print(result)
-                result.pop()
-            else:
-                placing_n(n, row + 1, 0, result)
-        col += 1
-    if len(result) > 0:
-        result.pop()
+from sys import argv
 
 
-def check_around(row, col, result):
-    """
-    check_around
-    """
-    diagR = [i[0] + i[1] for i in result]
-    diagL = [i[1] - i[0] for i in result]
-    colms = [i[1] for i in result]
-    rows = [i[0] for i in result]
-    if row in rows or col in colms or row + col in diagR or col - row in diagL:
-        return False
-    return True
+def nqueens():
+    """main for nqueens"""
+
+    if len(argv) != 2:
+        print("Usage: nqueens N")
+        exit(1)
+
+    try:
+        N = int(argv[1])
+    except ValueError:
+        print("N must be a number")
+        exit(1)
+
+    if (N < 4):
+        print("N must be at least 4")
+        exit(1)
+
+    board = [[0 for i in range(N)] for j in range(N)]
+
+    col = 0
+
+    positions(board, col, N)
+
+
+def positions(board, col, N):
+    """should work out everything else lets see how that goes"""
+
+    if col == N:
+        printSomething(board, N)
+    else:
+        for i in range(N):
+            thing = True
+            for j in range(col):
+                if check(board, j, i, col):
+                    thing = False
+            if thing is True:
+                board[col] = i
+                positions(board, col + 1, N)
+
+
+def check(board, j, i, col):
+    """ It's not uncommon for recursion to fuck my world up"""
+
+    if ((board[j] == i) or (board[j] == i - j + col) or
+            (board[j] == j - col + i)):
+        return True
+    return False
+
+
+def printSomething(board, N):
+    """ At some point it should spit out answers"""
+
+    result = []
+
+    for col in range(N):
+        for row in range(N):
+            if board[row] == col:
+                result.append([col, row])
+    print(result)
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: nqueens N")
-        sys.exit(1)
-    if not sys.argv[1].isdigit():
-        print("N must be a number")
-        sys.exit(1)
-    n = int(sys.argv[1])
-    if n < 4:
-        print("N must be at least 4")
-        sys.exit(1)
-    result = []
-    placing_n(n, 0, 0, result)
+    nqueens()
